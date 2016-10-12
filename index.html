@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Made with Thimble</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+    div.calculator {
+      font-size: 0px;
+      height: 500px;
+      width: 450px;
+    }
+
+    tr.screen {
+      background: lightgray;
+      width: 440px;
+      height: 100px;
+      text-align: right;
+      font-size: 50px;
+    }
+
+    td.digit {
+      display: inline-block;
+      width: 330px;
+      background: gray;
+      height: 350px;
+      font-size: 0px;
+    }
+
+    button {
+      display: inline-block;
+      width: 100px;
+      height: 75px;
+      background: lavender;
+      font-size: 29px;
+      vertical-align: top;
+      margin: 5px;
+      text-align: center;
+      box-sizing: border-box;
+      padding: 15px;
+    }
+
+    div.actions {
+      display: inline-block;
+      width: 110px;
+      height: 350px;
+      background: orange;
+      vertical-align: top;
+      box-sizing: border-box;
+    }
+
+  </style>
+</head>
+<body>
+<div class = "calculator">
+
+  <table>
+    <tr class="screen" id="screen"></tr>
+    <tr>
+      <td><button class='digit'>1</button></td>
+      <td><button class='digit'>2</button></td>
+      <td><button class='digit'>3</button></td>
+      <td><button class='operator'>/</button></td>
+    </tr>
+    <tr class=digits>
+      <td><button class='digit'>4</button></td>
+      <td><button class='digit'>5</button></td>
+      <td><button class='digit'>6</button></td>
+      <td><button class='operator' >*</button></td>
+    </tr>
+    <tr class=digits>
+      <td><button class='digit'>7</button></td>
+      <td><button class='digit'>8</button></td>
+      <td><button class='digit'>9</button></td>
+      <td><button class='operator' >-</button></td>
+    </tr>
+    <td><button class='clear' >AC</button></td>
+    <td><button class='digit' >0</button></td>
+    <td><button class='run' >=</button></td>
+    <td><button class='operator' >+</button></td>
+  </table>
+  </div>
+
+  <script>
+
+    var Calculator = function(){
+      this.add = function(a, b){
+        return a + b;
+      };
+      this.sub = function(a, b){
+        return b -a;
+      };
+      this.mul = function(a, b){
+        return a * b;
+      };
+      this.divi = function(a, b){
+        return a / b;
+      };
+    }
+
+    var c = new Calculator();
+
+    var  digits =   document.getElementsByClassName("digit");
+
+    for ( var i in digits ) {
+      digits[i].innerHTML = 9 - i
+      digits[i].onclick = function() {
+        if(flagClearDisplay) {
+          document.getElementById("screen").innerHTML = "";
+          flagClearDisplay = false;
+        }
+        document.getElementById("screen").innerHTML += this.innerHTML
+      }
+    }
+
+    var  operatorButton =   document.getElementsByClassName("operator");
+
+    var valuesArr = [];
+
+    var flagClearDisplay =  false;
+
+    var operator = null;
+
+    for ( var i in operatorButton ) {
+      operatorButton[i].onclick = function() {
+        flagClearDisplay = true;
+        valuesArr.push( parseInt(document.getElementById("screen").innerHTML))
+        operator = this.innerHTML;
+      }
+    }
+
+    document.getElementsByClassName("clear")[0].onclick= function() {
+      document.getElementById("screen").innerHTML = "0";
+    }
+
+    document.getElementsByClassName("run")[0].onclick = function() {
+
+      valuesArr.push( parseInt(document.getElementById("screen").innerHTML))
+
+      switch(operator) {
+        case "/":
+          result = c.divi( valuesArr[0], valuesArr[1])
+          break;
+        case "*":
+          result = c.mul( valuesArr[0], valuesArr[1])
+          break;
+        case "-":
+          result = c.sub( valuesArr[0], valuesArr[1])
+          break;
+        case "+":
+          result = c.add( valuesArr[0], valuesArr[1])
+          break;
+      }
+
+      document.getElementById("screen").innerHTML = result;
+    }
+
+  </script>
+
+</body>
+</html>
